@@ -1,0 +1,625 @@
+swagger: '2.0'
+info:
+  title: Payroll And Supplier Payment - Payers
+  description: >-
+    El Payroll And Supplier Payment - Payers permite realizar la gestión con la
+    información de los clientes pagadores
+  contact:
+    name: Bancolombia API Working Group
+    email: apigroup@bancolombia.com.co
+    url: https://developer.grupobancolombia.com.co/contact
+  termsOfService: ''
+  version: 1.0.1
+  x-ibm-name: payroll-and-supplier-payment-payers
+host: $(catalog.host)
+basePath: /v1/sales-services/customer/payroll-and-supplier-payment
+paths:
+  /payers:
+    post:
+      summary: Esta Api permite la inscripción de un cliente a un convenio de pago
+      description: Esta Api permimte crear (inscribir) los clientes pagadores
+      parameters:
+        - name: message-id
+          maxLength: 128
+          required: true
+          description: >-
+            Identificador de transacción. Se recomienda usar un UUID para el
+            valor de este campo.
+          in: header
+          type: string
+        - name: request
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/RequestCreatePayer'
+      responses:
+        '204':
+          description: Respuesta exitosa.
+          x-ibm-languages:
+            description:
+              en: Successful response.
+          headers:
+            Strict-Transport-Security:
+              type: string
+              description: >-
+                Indica al navegador que realiza la petición realizar la
+                comunicación con el servidor solo a través de HTTPS
+              x-ibm-languages:
+                description:
+                  en: >-
+                    Indica al navegador que realiza la petición realizar la
+                    comunicación con el servidor solo a través de HTTPS.
+        '400':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Error en la solicitud.
+          x-ibm-languages:
+            description:
+              en: Error in the request.
+        '401':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Credenciales incorrectas.
+          x-ibm-languages:
+            description:
+              en: Incorrect credentials.
+        '403':
+          schema:
+            $ref: '#/definitions/failure'
+          description: No tiene permisos para acceder al recurso.
+          x-ibm-languages:
+            description:
+              en: You do not have permissions to access the resource.
+        '404':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Recurso no encontrado.
+          x-ibm-languages:
+            description:
+              en: Resource not found.
+        '409':
+          schema:
+            $ref: '#/definitions/failure'
+          description: >-
+            El estado del recurso presenta conflictos con los datos de la
+            solicitud.
+          x-ibm-languages:
+            description:
+              en: Resource state has conflicts with data of the request.
+        '500':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Error interno del servidor.
+          x-ibm-languages:
+            description:
+              en: Internal server error.
+        '502':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Error en la respuesta del proveedor del servicio.
+          x-ibm-languages:
+            description:
+              en: Error in the service provider response.
+        '503':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Servicio no disponible.
+          x-ibm-languages:
+            description:
+              en: Service unavailable.
+        '504':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Tiempo de respuesta del proveedor del servicio excedido.
+          x-ibm-languages:
+            description:
+              en: Service provider response time exceeded.
+        default:
+          description: Error inesperado.
+          x-ibm-languages:
+            description:
+              en: Unexpected Error.
+      tags:
+        - Payers
+      security:
+        - ClientSecret: []
+          ClientId: []
+  /customers/{customerId}/payers:
+    get:
+      summary: >-
+        Esta Api permite la consulta de la información de un cliente pagador a
+        partir de su número de identificación
+      description: Esta Api permite consultar los clientes pagadores y su parametrización
+      parameters:
+        - name: message-id
+          maxLength: 128
+          required: true
+          description: >-
+            Identificador de transacción. Se recomienda usar un UUID para el
+            valor de este campo.
+          in: header
+          type: string
+        - in: path
+          name: customerId
+          type: string
+          required: true
+          description: >-
+            Tipo y numero de documento del cliente. documentType (20) -
+            documentNumber (15) separado por un guion. - TIPDOC_FS000 : CARNET
+            DIPLOMATICO - TIPDOC_FS001 : CEDULA DE CIUDADANIA - TIPDOC_FS002 :
+            CEDULA DE EXTRANJERIA - TIPDOC_FS003 : NIT - TIPDOC_FS004 : TARJETA
+            DE IDENTIDAD - TIPDOC_FS005 : PASAPORTE - TIPDOC_FS006 : ID
+            EXTRANJERO PN NO RESIDENTE EN COLOMBIA - TIPDOC_FS007 : ID
+            EXTRANJERO PJ NO RESIDENTE EN COLOMBIA - TIPDOC_FS008 : FIDEICOMISO 
+            - TIPDOC_FS009 : REGISTRO CIVIL
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/ResponseRetrievePayer'
+          description: Respuesta exitosa.
+          x-ibm-languages:
+            description:
+              en: Successful response.
+        '400':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Error en la solicitud.
+          x-ibm-languages:
+            description:
+              en: Error in the request.
+        '401':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Credenciales incorrectas.
+          x-ibm-languages:
+            description:
+              en: Incorrect credentials.
+        '403':
+          schema:
+            $ref: '#/definitions/failure'
+          description: No tiene permisos para acceder al recurso.
+          x-ibm-languages:
+            description:
+              en: You do not have permissions to access the resource.
+        '404':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Recurso no encontrado.
+          x-ibm-languages:
+            description:
+              en: Resource not found.
+        '409':
+          schema:
+            $ref: '#/definitions/failure'
+          description: >-
+            El estado del recurso presenta conflictos con los datos de la
+            solicitud.
+          x-ibm-languages:
+            description:
+              en: Resource state has conflicts with data of the request.
+        '500':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Error interno del servidor.
+          x-ibm-languages:
+            description:
+              en: Internal server error.
+        '502':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Error en la respuesta del proveedor del servicio.
+          x-ibm-languages:
+            description:
+              en: Error in the service provider response.
+        '503':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Servicio no disponible.
+          x-ibm-languages:
+            description:
+              en: Service unavailable.
+        '504':
+          schema:
+            $ref: '#/definitions/failure'
+          description: Tiempo de respuesta del proveedor del servicio excedido.
+          x-ibm-languages:
+            description:
+              en: Service provider response time exceeded.
+        default:
+          description: Error inesperado.
+          x-ibm-languages:
+            description:
+              en: Unexpected Error.
+      tags:
+        - Payers
+      security:
+        - ClientSecret: []
+          ClientId: []
+  /payroll-and-supplier-payment/health:
+    head:
+      responses:
+        '200':
+          description: 200 OK
+      security:
+        - ClientId: []
+          ClientSecret: []
+definitions:
+  RequestCreatePayer:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - payer
+        properties:
+          payer:
+            $ref: '#/definitions/payer'
+  ResponseRetrievePayer:
+    type: object
+    required:
+      - meta
+      - data
+    properties:
+      meta:
+        $ref: '#/definitions/meta'
+      data:
+        type: object
+        required:
+          - payer
+        properties:
+          payer:
+            $ref: '#/definitions/payerResponse'
+  payer:
+    required:
+      - identification
+    properties:
+      identification:
+        $ref: '#/definitions/identification'
+  payerResponse:
+    required:
+      - name
+      - formatType
+      - validateBeneficiaryAccount
+      - validateBeneficiaryDocument
+      - validateDocumentAndAccount
+      - debitForm
+      - commission
+    properties:
+      name:
+        type: string
+        description: Nombre del convenio
+        maxLength: 50
+        minLength: 1
+        example: ARMANDO SANCHEZ
+      formatType:
+        type: string
+        description: Tipo de formato que se debe usar en la estructura del archivo
+        example: PAB
+        maxLength: 3
+        minLength: 1
+        enum:
+          - PAB
+          - SAP
+      validateBeneficiaryAccount:
+        type: boolean
+        description: >-
+          Permite conocer si debe inscribir las cuentas de  los beneficiarios
+          previo al pago aplica para abono a cuenta
+      validateBeneficiaryDocument:
+        type: boolean
+        description: >-
+          Permite conocer si debe inscribir los nit de  los beneficiarios previo
+          al pago aplica para pagos por ventanilla
+      validateDocumentAndAccount:
+        type: boolean
+        description: >-
+          Permite conocer si quiere que sus pagos validen si el nit pertenece a
+          la cuenta
+      application:
+        type: string
+        description: Indica la forma en que los beneficiario recibirán los pagos
+        example: inmediato
+        enum:
+          - inmediato
+          - medio dia
+          - noche
+      debitForm:
+        type: string
+        description: Indica si los debitos deben ser consolidados o uno a uno
+        example: Detallado Nomina
+        enum:
+          - Consolidado
+          - Detallado
+          - Detallado Nomina
+          - Detallado Proveedores
+      checkPayments:
+        type: boolean
+        description: Indica si el cliente pagador permite pagos en cheque
+      cashPayments:
+        type: boolean
+        description: Indica si el cliente pagador permite pagos en efectivo
+      expirationDaysForCounterPayments:
+        type: number
+        description: Indica el número de dias que está activo el pago por ventanilla
+        example: 2
+        maxLength: 3
+      cancellationDaysForCounterPayments:
+        type: number
+        description: Indica el día del mes en que se anulará el pago por ventanilla
+        example: 3
+        maxLength: 3
+      commission:
+        description: Información de las comisiones del pagador
+        required:
+          - commissionChargeFrequency
+        allOf:
+          - $ref: '#/definitions/commissionChargeFrequency'
+          - $ref: '#/definitions/simpleAccount'
+  simpleAccount:
+    type: object
+    properties:
+      account:
+        description: Información de la Identificación del pagador
+        required:
+          - type
+          - number
+        allOf:
+          - $ref: '#/definitions/accountType'
+          - $ref: '#/definitions/accountNumber'
+  identification:
+    type: object
+    required:
+      - type
+      - number
+    properties:
+      type:
+        type: string
+        description: >-
+          Identificador del tipo de documento. - TIPDOC_FS000 : CARNET
+          DIPLOMATICO - TIPDOC_FS001 : CEDULA DE CIUDADANIA - TIPDOC_FS002 :
+          CEDULA DE EXTRANJERIA - TIPDOC_FS003 : NIT - TIPDOC_FS004 : TARJETA DE
+          IDENTIDAD - TIPDOC_FS005 : PASAPORTE - TIPDOC_FS006 : ID EXTRANJERO PN
+          NO RESIDENTE EN COLOMBIA - TIPDOC_FS007 : ID EXTRANJERO PJ NO
+          RESIDENTE EN COLOMBIA - TIPDOC_FS008 : FIDEICOMISO  - TIPDOC_FS009 :
+          REGISTRO CIVIL.
+        example: TIPDOC_FS001
+        minLength: 1
+        maxLength: 20
+        enum:
+          - TIPDOC_FS000
+          - TIPDOC_FS001
+          - TIPDOC_FS002
+          - TIPDOC_FS003
+          - TIPDOC_FS004
+          - TIPDOC_FS005
+          - TIPDOC_FS006
+          - TIPDOC_FS007
+          - TIPDOC_FS008
+          - TIPDOC_FS009
+      number:
+        type: string
+        description: Número Identificación del pagador
+        example: '890511670'
+        maxLength: 15
+        minLength: 1
+  commissionChargeFrequency:
+    type: object
+    properties:
+      commissionChargeFrequency:
+        type: string
+        description: Informa la perioridad del cobro de comision,
+        example: D
+        maxLength: 1
+        enum:
+          - D
+          - S
+          - M
+  accountType:
+    type: object
+    properties:
+      type:
+        type: string
+        description: tipo de la cuenta del convenio
+        example: CUENTA_CORRIENTE
+        enum:
+          - CUENTA_DE_AHORRO
+          - CUENTA_CORRIENTE
+          - Credipagos
+  accountNumber:
+    type: object
+    properties:
+      number:
+        type: string
+        description: numero de la cuenta del convenio, beneficiario o pagador
+        example: 55131428291
+        maxLength: 17
+        minLength: 1
+  meta:
+    description: Meta-información no estandar que no se puede representar con datos
+    type: object
+    required:
+      - _messageId
+      - _requestDateTime
+      - _applicationId
+    properties:
+      _messageId:
+        type: string
+        example: c4e6bd04-5149-11e7-b114-b2f933d5fe66
+      _requestDateTime:
+        type: string
+        format: date-time
+        example: '2017-01-24T05:00:00.000Z'
+      _applicationId:
+        type: string
+        example: acxff62e-6f12-42de-9012-3e7304418abd
+  headerData:
+    description: El "tipo" y "id" para cada registro.
+    type: object
+    required:
+      - type
+      - id
+    properties:
+      type:
+        type: string
+        example: Account-Transfer
+      id:
+        type: string
+        example: Account-Transfer-2020-01-24T05:00:00.000Z
+    additionalProperties: false
+  failure:
+    type: object
+    required:
+      - meta
+      - errors
+      - status
+      - title
+    properties:
+      meta:
+        $ref: '#/definitions/meta'
+      status:
+        description: >-
+          El cÃ³digo de estado HTTP aplicable a este problema, expresado como un
+          valor de cadena.
+        type: string
+        example: 404
+      title:
+        description: >-
+          Un breve resumen, legible por el hombre, del problema. ** NO DEBE **
+          cambiar de ocurrencia a ocurrencia del problema, excepto para
+          propósitos de localización.
+        type: string
+        example: Not Found
+      errors:
+        type: array
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/error'
+    additionalProperties: false
+  error:
+    type: object
+    required:
+      - code
+      - detail
+    properties:
+      code:
+        description: >-
+          Un código de error específico de la aplicación, expresado como un
+          valor de cadena.
+        type: string
+        example: BP404
+      detail:
+        description: >-
+          Una explicación legible por humanos específica para esta ocurrencia
+          del problema.
+        type: string
+        example: Requested resource could not be found
+    additionalProperties: false
+schemes:
+  - https
+x-ibm-configuration:
+  enforced: true
+  testable: true
+  phase: realized
+  cors:
+    enabled: true
+  catalogs:
+    development:
+      properties:
+        catalogName: development
+        EndPoint: https://10.8.74.103:3300/ESB/SOAP/Default
+        profileTls: apic-tls-profile-pagos-on-premises
+        hostName: gw-pagos.apps.ocpdes.ambientesbc.lab
+    testing:
+      properties:
+        catalogName: testing
+        EndPoint: https://10.8.74.103:3300/ESB/SOAP/Default
+        profileTls: apic-tls-profile-pagos-on-premises
+        hostName: gw-pagos.apps.ocpqa.ambientesbc.lab
+    production:
+      properties:
+        catalogName: production
+        EndPoint: https://esbpro.bancolombia.corp:3300/ESB/SOAP/Default
+        profileTls: apic-tls-profile-pagos-on-premises
+        hostName: gw-pagos.apps.ocpprod.bancolombia.corp
+    sb:
+      properties:
+        catalogName: sandbox
+        EndPoint: https://integracion-int-qa.apps.ambientesbc.lab/
+        profileTls: apic-tls-profile-cluster-eks-integracion-sandbox
+        hostName: gw-sandbox-qa.apps.ambientesbc.lab
+  buffering: true
+  type: rest
+securityDefinitions:
+  ClientSecret:
+    type: apiKey
+    description: ''
+    in: header
+    name: Client-Secret
+    x-key-type: client_secret
+  ClientId:
+    type: apiKey
+    in: header
+    name: Client-Id
+    description: Identificación de la aplicación consumidora usando el client_id
+    x-key-type: client_id
+x-API-Authors:
+  Design:
+    name: Anuar Alvarino Laguna
+    email: aalvarin@bancolombia.com.co
+  Development:
+    name: ''
+    email: ''
+  Review:
+    name: ''
+    email: ''
+consumes:
+  - application/vnd.bancolombia.v4+json
+produces:
+  - application/vnd.bancolombia.v4+json
+  - aalvarin
+x-ibm-comment:
+  - >-
+    AMU version used to port this API:
+    v10.0.4.0-R3-038219a5d36301d59b37855c11dd216fff5508c1-2022-03-02T00:19:43Z
+  - >-
+    API03: Suffix -apigw appended to API `title` and `x-ibm-name`. For details,
+    see:
+    https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#API_NAME_ADDED_SUFFIX
+  - 'API06: Changed gateway type to `datapower-api-gateway`.'
+  - >-
+    API14: Ported v5-compatible policies to work with the API Gateway and
+    updated policy versions.
+  - >-
+    API56: Catalog specific API Property found without a corresponding default
+    property: ProfileTLS for catalog: apic-dev, created empty string default
+    property at the API level. For details, see:
+    https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#CATALOG_PROPERTIES_FOUND_NO_DEFAULT
+  - >-
+    API45: Compatibility toggle: `allow-chunked-uploads` set to value: `false`,
+    which is the same as the API Gateway default. For details, see:
+    https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#COMPAT_TOGGLE_MATCHES_APIGW_DEFAULT
+  - >-
+    API45: Compatibility toggle: `copy-id-headers-to-message` set to value:
+    `false`, which is the same as the API Gateway default. For details, see:
+    https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#COMPAT_TOGGLE_MATCHES_APIGW_DEFAULT
+  - >-
+    API45: Compatibility toggle: `return-v5-responses` set to value: `false`,
+    which is the same as the API Gateway default. For details, see:
+    https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#COMPAT_TOGGLE_MATCHES_APIGW_DEFAULT
+  - >-
+    API61: Set buffering property to true. For details, see:
+    https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#SET_BUFFERING
+  - >-
+    API58: `securityDefinition` property encountered without a `security`
+    property. An empty `security` property is added. For details, see:
+    https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#ADDED_EMPTY_SECURITY
+  - >-
+    API46: Updated `securityDefinition`: `X-IBM-Client-Id` with new name:
+    `Client-Id` as specified in toggle input: `client-id-header-override`. For
+    details, see:
+    https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#UPDATED_SECURITY_DEF
+security:
+  - ClientSecret: []
+    ClientId: []
